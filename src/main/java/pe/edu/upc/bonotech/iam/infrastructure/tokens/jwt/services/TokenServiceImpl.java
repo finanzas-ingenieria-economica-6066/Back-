@@ -24,13 +24,17 @@ import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import pe.edu.upc.bonotech.iam.infrastructure.tokens.jwt.BearerTokenService;
 
+// --- 1. IMPORT NECESARIO PARA QUE SPRING RECONOZCA LA INYECCIÓN ---
+import pe.edu.upc.bonotech.iam.application.internal.outboundservices.tokens.TokenService;
+
 /**
  * Token service implementation for JWT tokens.
  * This class is responsible for generating and validating JWT tokens.
  * It uses the secret and expiration days from the application.properties file.
  */
 @Service
-public class TokenServiceImpl implements BearerTokenService {
+// --- 2. AGREGAMOS TokenService AQUÍ PARA CUMPLIR EL CONTRATO ---
+public class TokenServiceImpl implements BearerTokenService, TokenService {
     private final Logger LOGGER = LoggerFactory.getLogger(TokenServiceImpl.class);
 
     private static final String AUTHORIZATION_PARAMETER_NAME = "Authorization";
@@ -46,8 +50,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * This method generates a JWT token from an authentication object
-     * 
-     * @param authentication the authentication object
+     * * @param authentication the authentication object
      * @return String the JWT token
      * @see Authentication
      */
@@ -58,10 +61,11 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * This method generates a JWT token from a username
-     * 
-     * @param username the username
+     * * @param username the username
      * @return String the JWT token
      */
+    // Este Override confirma que estamos implementando TokenService correctamente
+    @Override
     public String generateToken(String username) {
         return buildTokenWithDefaultParameters(username);
     }
@@ -69,8 +73,7 @@ public class TokenServiceImpl implements BearerTokenService {
     /**
      * This method generates a JWT token from a username and a secret.
      * It uses the default expiration days from the application.properties file.
-     * 
-     * @param username the username
+     * * @param username the username
      * @return String the JWT token
      */
     private String buildTokenWithDefaultParameters(String username) {
@@ -87,8 +90,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * This method extracts the username from a JWT token
-     * 
-     * @param token the token
+     * * @param token the token
      * @return String the username
      */
     @Override
@@ -98,8 +100,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * This method validates a JWT token
-     * 
-     * @param token the token
+     * * @param token the token
      * @return boolean true if the token is valid, false otherwise
      */
     @Override
@@ -124,8 +125,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * Extract a claim from a token
-     * 
-     * @param token           the token
+     * * @param token           the token
      * @param claimsResolvers the claims resolver
      * @param <T>             the type of the claim
      * @return T the claim
@@ -137,8 +137,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * Extract all claims from a token
-     * 
-     * @param token the token
+     * * @param token the token
      * @return Claims the claims
      */
     private Claims extractAllClaims(String token) {
@@ -147,8 +146,7 @@ public class TokenServiceImpl implements BearerTokenService {
 
     /**
      * Get the signing key
-     * 
-     * @return SecretKey the signing key
+     * * @return SecretKey the signing key
      */
     private SecretKey getSigningKey() {
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);

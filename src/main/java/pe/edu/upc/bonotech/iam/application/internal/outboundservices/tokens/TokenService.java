@@ -1,9 +1,12 @@
 package pe.edu.upc.bonotech.iam.application.internal.outboundservices.tokens;
 
+import org.springframework.stereotype.Service;
+
 /**
  * TokenService interface
  * This interface is used to generate and validate tokens
  */
+@Service
 public interface TokenService {
 
     /**

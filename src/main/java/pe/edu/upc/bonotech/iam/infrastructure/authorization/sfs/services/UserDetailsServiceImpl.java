@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.upc.bonotech.iam.infrastructure.authorization.sfs.model.UserDetailsImpl;
 import pe.edu.upc.bonotech.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 
-@Service
+@Service("defaultUserDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
