@@ -27,4 +27,5 @@ public interface IBondCommandService {
      * Elimina una simulación de crédito
      */
     boolean deleteLoan(Long loanId);
+    boolean deleteBond(Long id);
 }

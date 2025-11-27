@@ -129,6 +129,29 @@ public class BondController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete loan simulation", description = "Delete an existing loan simulation by ID")
+    public ResponseEntity<?> deleteLoan(@PathVariable Long id) {
+        try {
+            // Se asume que tu servicio tiene un método para eliminar
+            // Si retorna un booleano indicando éxito:
+            boolean deleted = bondCommandService.deleteBond(id);
+
+            if (!deleted) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "No se encontró la simulación con ID: " + id));
+            }
+
+            // Retornamos 200 OK con mensaje (o podría ser 204 No Content)
+            return ResponseEntity.ok(Map.of("message", "Simulación eliminada exitosamente"));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error interno al eliminar: " + e.getMessage()));
+        }
+    }
+
+
     @GetMapping("/{id}/amortization-table")
     @Operation(summary = "Get amortization table", description = "Get the complete amortization table for a loan")
     public ResponseEntity<?> getAmortizationTable(@PathVariable Long id) {

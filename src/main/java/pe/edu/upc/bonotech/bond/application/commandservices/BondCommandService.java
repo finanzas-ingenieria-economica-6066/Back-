@@ -38,6 +38,15 @@ public class BondCommandService implements IBondCommandService {
     }
 
     @Override
+    public boolean deleteBond(Long id) {
+        if (bondRepository.existsById(id)) {
+            bondRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean deleteLoan(Long loanId) {
         // Implementación real pendiente
         return false;
