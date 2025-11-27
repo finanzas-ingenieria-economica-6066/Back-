@@ -47,4 +47,8 @@ public class BondQueryServiceImpl implements IBondQueryService {
         // Para límites diferentes a 10, necesitarías un método personalizado
         return bondRepository.findTop10ByOrderByCreatedAtDesc();
     }
+    @Override
+    public Optional<Bond> getBondById(Long id) {
+        return bondRepository.findById(id);
+    }
 }

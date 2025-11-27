@@ -31,4 +31,6 @@ public interface IBondQueryService {
      * Obtiene el historial de simulaciones recientes
      */
     List<Bond> getRecentLoans(int limit);
+
+    Optional<Bond> getBondById(Long id);
 }

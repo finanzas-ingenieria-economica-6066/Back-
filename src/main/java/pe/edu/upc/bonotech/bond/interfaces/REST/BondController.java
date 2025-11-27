@@ -22,7 +22,7 @@ import pe.edu.upc.bonotech.bond.interfaces.REST.resources.UpdateBondResource;
 import pe.edu.upc.bonotech.iam.domain.services.UserQueryService;
 
 @RestController
-@RequestMapping(value = "/api/v1/loans", produces = MediaType.APPLICATION_JSON_VALUE) // Cambiado a /loans
+@RequestMapping(value = "/v1/loans", produces = MediaType.APPLICATION_JSON_VALUE) // Cambiado a /loans
 @Tag(name = "Loans", description = "MIVivienda Loan Management Endpoints") // Cambiado a Loans
 public class BondController {
     
@@ -112,12 +112,20 @@ public class BondController {
     @Operation(summary = "Get loan details", description = "Get detailed information of a specific loan simulation")
     public ResponseEntity<?> getLoanById(@PathVariable Long id) {
         try {
-            // Implementar según necesidad - podrías necesitar un nuevo método en el query service
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-                .body(Map.of("message", "Endpoint en desarrollo"));
+            var bondOpt = bondQueryService.getBondById(id);
+
+            if (bondOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "No se encontró la simulación con ID: " + id));
+            }
+
+            var bondResource = BondResource.fromBond(bondOpt.get());
+
+            return ResponseEntity.ok(bondResource);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", e.getMessage()));
+                    .body(Map.of("error", "Error interno al obtener el detalle: " + e.getMessage()));
         }
     }
 
